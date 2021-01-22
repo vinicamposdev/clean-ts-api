@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test:staged": "jest",
     "test": "jest"
   },
   "keywords": [],
