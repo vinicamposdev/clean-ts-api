@@ -1,0 +1,37 @@
+{
+    "window.zoomLevel": 0,
+    "workbench.colorTheme": "Dracula",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.fontFamily": "Fira Code,'Fira Code','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontLigatures": true,
+    "emmet.syntaxProfiles": {
+        "javascript":"jsx"
+    },
+    "emmet.includeLanguages": {
+        "javascript":"javascriptreact"
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "material-icon-theme.files.associations": {
+        "ormconfig.json": "database",
+        "tsconfig.json": "tune",
+        "insomnia-collection.yml": "less"
+    },
+    "material-icon-theme.folders.associations": {
+        "infra":"app",
+        "entities": "class",
+        "schema": "class",
+        "typeorm":"database",
+        "repositories": "mappings",
+        "migrations": "tools",
+        "http": "global",
+        "modules":"components",
+        "implementations":"core",
+        "dtos":"typescript",
+        "fakes":"mock",
+        "users":"android",
+        "immobiles":"container"
+    }
+  }
+  
