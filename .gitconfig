@@ -1,0 +1,11 @@
+# use the command below to apply the alias in the gitconfig file
+# $ git config --[local/global/system] --edit
+[core]
+	editor = code
+[alias]
+	s = !git status -s
+	c = !git add --all && git commit -m 
+	l = !git log --pretty=format:'%C(blue)%h %C(red)%d%C(yellow)%s - %C(cyan)%cn,%C(green) %cr '
+	cm = commit -m 
+	cma = commit --amend -m
+	r = reset HEAD~1 --soft
