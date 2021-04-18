@@ -3,7 +3,7 @@ import { MissingParamError } from '@/errors/missing-params-error'
 import { badRequest, serverError } from '@/helpers/http-helpers'
 import { IController } from '@/protocols/controller'
 import { IEmailValidator } from '@/protocols/email-validator'
-import { InvalidParamError } from '@/errors/invalid-param-error copy'
+import { InvalidParamError } from '@/errors/invalid-param-error'
 export class SignUpController implements IController {
   private readonly emailValidator: IEmailValidator
 
