@@ -6,3 +6,6 @@ dist
 
 # Jest Coverage Reports
 coverage
+
+#Jest Mongo Config
+globalConfig.json
