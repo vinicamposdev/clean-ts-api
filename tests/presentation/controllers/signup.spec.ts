@@ -105,7 +105,7 @@ describe('Signup Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('password_confirmation'))
+    expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
   })
 
   test('Should return 400 if an invalid email is provided', async () => {
@@ -118,7 +118,7 @@ describe('Signup Controller', () => {
         name: 'any_mame',
         email: 'invalid_email',
         password: 'any_password',
-        password_confirmation: 'any_password'
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -140,7 +140,7 @@ describe('Signup Controller', () => {
         name: 'any_mame',
         email: correctEmail,
         password: 'any_password',
-        password_confirmation: 'any_password'
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -161,7 +161,7 @@ describe('Signup Controller', () => {
         name: 'any_mame',
         email: 'invalid_email',
         password: 'any_password',
-        password_confirmation: 'any_password'
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -185,7 +185,7 @@ describe('Signup Controller', () => {
     const httpRequest = {
       body: {
         ...correctValues,
-        password_confirmation: 'any_password'
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -206,7 +206,7 @@ describe('Signup Controller', () => {
         name: 'any_mame',
         email: 'invalid_email',
         password: 'any_password',
-        password_confirmation: 'any_password'
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -227,7 +227,7 @@ describe('Signup Controller', () => {
     const httpRequest = {
       body: {
         ...validData,
-        password_confirmation: 'valid_password'
+        passwordConfirmation: 'valid_password'
       }
     }
 

@@ -13,7 +13,7 @@ export class SignUpController implements IController {
 
   async handle (httpRequest: IHttpRequest): Promise<IHttpResponse> {
     try {
-      const requiredFields = ['name', 'email', 'password', 'password_confirmation']
+      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
       for (const requiredField of requiredFields) {
         if (!httpRequest.body[requiredField]) {
           return badRequest(new MissingParamError(requiredField))
