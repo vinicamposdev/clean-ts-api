@@ -9,3 +9,6 @@ coverage
 
 #Jest Mongo Config
 globalConfig.json
+
+# Mongo Data
+data
