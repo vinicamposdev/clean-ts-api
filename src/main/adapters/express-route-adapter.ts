@@ -1,5 +1,5 @@
 import 'module-alias/register'
-import { IController, IHttpRequest } from '@/presentation/protocols'
+import { IController, IHttpRequest, IHttpResponse } from '@/presentation/protocols'
 import { Request, Response } from 'express'
 
 export const adaptRoute = (controller: IController) => {
@@ -8,7 +8,8 @@ export const adaptRoute = (controller: IController) => {
       body: req.body
     }
 
-    const httpResponse = await controller.handle(httpRequest)
+    const httpResponse: IHttpResponse = await controller.handle(httpRequest)
+
     res.status(httpResponse.statusCode).json(httpResponse.body)
   }
 }
