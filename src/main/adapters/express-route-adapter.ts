@@ -7,10 +7,8 @@ export const adaptRoute = (controller: IController) => {
     const httpRequest: IHttpRequest = {
       body: req.body
     }
-    console.log({ httpRequest })
 
     const httpResponse = await controller.handle(httpRequest)
-    console.log({ httpResponse })
     res.status(httpResponse.statusCode).json(httpResponse.body)
   }
 }
