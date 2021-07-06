@@ -2,6 +2,8 @@
 # $ git config --[local/global/system] --edit
 [core]
 	editor = code
+[push]
+	followTags = true
 [alias]
 	s = !git status -s
 	c = !git add --all && git commit -m 
