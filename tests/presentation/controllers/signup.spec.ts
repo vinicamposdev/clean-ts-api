@@ -1,5 +1,5 @@
 import { SignUpController } from '@/presentation/controllers/signup'
-import { IAccountModel, IAddAccountModel, IAddAccount, IEmailValidator } from '@/presentation/controllers/signup/signup-protocols'
+import { IAccountModel, IAddAccountModel, IAddAccount, IEmailValidator, IValidation } from '@/presentation/controllers/signup/signup-protocols'
 import { MissingParamError, InvalidParamError, ServerError } from '@/presentation/errors'
 
 const makeEmailValidator = (): IEmailValidator => {
@@ -27,20 +27,32 @@ const makeAddAccount = (): IAddAccount => {
   return new AddAccountStub()
 }
 
+const makeValidation = (): IValidation => {
+  class ValidationStub implements IValidation {
+    validate (input: any): Error {
+      return null
+    }
+  }
+  return new ValidationStub()
+}
+
 interface ISutTypes {
   sut: SignUpController
   emailValidatorStub: IEmailValidator
   addAccountStub: IAddAccount
+  validationStub: IValidation
 }
 
 const makeSut = (): ISutTypes => {
   const emailValidatorStub = makeEmailValidator()
   const addAccountStub = makeAddAccount()
-  const sut = new SignUpController(emailValidatorStub, addAccountStub)
+  const validationStub = makeValidation()
+  const sut = new SignUpController(emailValidatorStub, addAccountStub, validationStub)
   return {
     sut,
     emailValidatorStub,
-    addAccountStub
+    addAccountStub,
+    validationStub
   }
 }
 
@@ -235,5 +247,24 @@ describe('Signup Controller', () => {
 
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body).toEqual({ ...validData, id: 'valid_id' })
+  })
+
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+
+    const httpRequest = {
+      body: {
+        name: 'any_mame',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+
+    await sut.handle(httpRequest)
+
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
