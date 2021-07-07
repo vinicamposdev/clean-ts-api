@@ -1,7 +1,7 @@
 import { SignUpController } from '@/presentation/controllers/signup'
 import { IAccountModel, IAddAccountModel, IAddAccount } from '@/presentation/controllers/signup/signup-protocols'
 import { MissingParamError, ServerError } from '@/presentation/errors'
-import { badRequest } from '@/presentation/helpers/http-helpers'
+import { badRequest } from '@/presentation/helpers/http/http-helpers'
 import { IValidation } from '@/presentation/helpers/validators/validators'
 
 const makeAddAccount = (): IAddAccount => {
