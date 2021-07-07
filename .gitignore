@@ -12,3 +12,5 @@ globalConfig.json
 
 # Mongo Data
 data
+!src/**/data
+!tests/**/data
