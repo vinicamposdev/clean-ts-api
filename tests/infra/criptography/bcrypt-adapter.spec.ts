@@ -21,7 +21,7 @@ describe('Bcrypt Adpter', () => {
 
     const valueHashed = 'any_value'
 
-    await sut.encrypt(valueHashed)
+    await sut.hash(valueHashed)
     expect(hashSpy).toHaveBeenCalledWith(valueHashed, salt)
   })
 
@@ -30,7 +30,7 @@ describe('Bcrypt Adpter', () => {
 
     const valueHashed = 'any_value'
 
-    const hash = await sut.encrypt(valueHashed)
+    const hash = await sut.hash(valueHashed)
 
     expect(hash).toBe('hash')
   })
@@ -44,7 +44,7 @@ describe('Bcrypt Adpter', () => {
     })
     const valueHashed = 'any_value'
 
-    const promise = sut.encrypt(valueHashed)
+    const promise = sut.hash(valueHashed)
 
     await expect(promise).rejects.toThrow()
   })
