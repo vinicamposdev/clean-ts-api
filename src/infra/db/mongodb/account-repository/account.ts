@@ -17,4 +17,15 @@ export class AccountMongoRepository implements IAddAccountRepository {
     const account = await accountCollection.findOne({ email })
     return account && MongoHelper.map(account)
   }
+
+  async updateAccessToken (id: string, token: string): Promise<void> {
+    const accountCollection = await MongoHelper.getCollection('accounts')
+    await accountCollection.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken: token
+      }
+    })
+  }
 }
