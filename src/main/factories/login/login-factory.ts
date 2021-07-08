@@ -10,7 +10,7 @@ import { DbAuthentication } from '@/data/usecases/authentication/db-authenticati
 import { makeLoginValidation } from './login-validation-factory'
 import { JwtAdapter } from '@/infra/criptography/jwt-adapter/jwt-adapter'
 
-export const makeSignUpController = (): IController => {
+export const makeLoginController = (): IController => {
   const salt = 12
   const bcryptAdapter = new BcryptAdapter(salt)
   const accountMongoRepository = new AccountMongoRepository()
