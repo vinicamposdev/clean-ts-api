@@ -1,5 +1,5 @@
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { AccountMongoRepository } from '@/infra/db/mongodb/account-repository/account'
+import { AccountMongoRepository } from '@/infra/db/mongodb/account/account-mongo-repository'
 import { Collection } from 'mongodb'
 import { IAccountModel } from '@/domain/models/account'
 

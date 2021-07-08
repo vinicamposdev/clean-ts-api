@@ -1,4 +1,4 @@
-import { IHttpRequest, IHttpResponse, IController, IAddAccount } from './signup-protocols'
+import { IHttpRequest, IHttpResponse, IController, IAddAccount } from './signup-controller-protocols'
 import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helpers'
 import { IValidation } from '@/presentation/protocols/validation'
 

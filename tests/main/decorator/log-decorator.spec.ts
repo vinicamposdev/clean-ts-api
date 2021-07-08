@@ -1,5 +1,5 @@
 import { IController, IHttpRequest, IHttpResponse } from '@/presentation/protocols'
-import { LogControllerDecorator } from '@/main/decorators/log'
+import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
 import { serverError } from '@/presentation/helpers/http/http-helpers'
 import { ILogErrorRepository } from '@/data/protocols/db/log-error-repository'
 const makeController = (): IController => {
