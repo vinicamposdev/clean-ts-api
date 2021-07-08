@@ -1,5 +1,9 @@
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { AccountMongoRepository } from '@/infra/db/mongodb/account-repository/account'
+import { Collection } from 'mongodb'
+import { IAccountModel } from '@/domain/models/account'
+
+let accountCollection: Collection
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
@@ -11,7 +15,7 @@ describe('Account Mongo Repository', () => {
   })
 
   beforeEach(async () => {
-    const accountCollection = await MongoHelper.getCollection('accounts')
+    accountCollection = await MongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
   })
 
@@ -19,10 +23,10 @@ describe('Account Mongo Repository', () => {
     await MongoHelper.disconnect()
   })
 
-  test('Should reutrn an acoount on success', async () => {
+  test('Should return an acoount on add success', async () => {
     const sut = makeSut()
 
-    const newAccount = {
+    const newAccount: Omit<IAccountModel, 'id'> = {
       name: 'any_name',
       email: 'any_email@mail.com',
       password: 'any_password'
@@ -35,5 +39,32 @@ describe('Account Mongo Repository', () => {
     expect(account.name).toBe(newAccount.name)
     expect(account.email).toBe(newAccount.email)
     expect(account.password).toBe(newAccount.password)
+  })
+
+  test('Should return an acoount on loadByEmail success', async () => {
+    const sut = makeSut()
+
+    const newAccount = {
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    }
+    await accountCollection.insertOne(newAccount)
+
+    const account = await sut.loadByEmail(newAccount.email)
+
+    expect(account).toBeTruthy()
+    expect(account.id).toBeTruthy()
+    expect(account.name).toBe(newAccount.name)
+    expect(account.email).toBe(newAccount.email)
+    expect(account.password).toBe(newAccount.password)
+  })
+
+  test('Should return null on loadByEmail fails', async () => {
+    const sut = makeSut()
+
+    const account = await sut.loadByEmail('any_email@mail.com')
+
+    expect(account).toBeFalsy()
   })
 })
