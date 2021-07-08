@@ -2,13 +2,10 @@ import { badRequest, ok, serverError, unauthorized } from '@/presentation/helper
 import { IController, IHttpRequest, IHttpResponse, IAuthentication, IValidation } from '@/presentation/controllers/login/login-controller-protocols'
 
 export class LoginController implements IController {
-  private readonly validation: IValidation
-  private readonly authentication: IAuthentication
-
-  constructor (authentication: IAuthentication, validation: IValidation) {
-    this.validation = validation
-    this.authentication = authentication
-  }
+  constructor (
+    private readonly authentication: IAuthentication,
+    private readonly validation: IValidation
+  ) {}
 
   async handle (httpRequest: IHttpRequest): Promise<IHttpResponse> {
     try {
