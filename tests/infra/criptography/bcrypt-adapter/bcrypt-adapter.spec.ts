@@ -1,7 +1,7 @@
 /* eslint-disable promise/param-names */
 import bcrypt from 'bcrypt'
 
-import { BcryptAdapter } from '@/infra/criptography/bcrypt-adapter'
+import { BcryptAdapter } from '@/infra/criptography/bcrypt-adapter/bcrypt-adapter'
 
 jest.mock('bcrypt', () => ({
   async hash (): Promise<string> {
