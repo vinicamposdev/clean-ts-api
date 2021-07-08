@@ -12,7 +12,8 @@
     "sourceMap": true,
     "rootDirs": ["src", "tests"],
     "baseUrl": "src",
-		"resolveJsonModule": false,
+		"resolveJsonModule": true,
+    "removeComments": true,
     "paths": {
       "@/tests/*": ["../tests/*"],
       "@/*": ["*"]
