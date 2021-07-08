@@ -8,13 +8,18 @@ services:
       - ./data:/data/db
     ports:
       - "27017:27017"
-  web:
+  api:
+    container_name: api-container
     build: .
+    restart: always
+    image: clean-ts-api
     command: npm start
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/clean-node-api
     volumes:
-      - .:/usr/app/
+      - ./dist: /usr/src/clean-ts-api/dist
       - /usr/app/node_modules
     ports:
-      - "3000:3000"
-    depends_on:
+      - "5050:5050"
+    links:
       - mongo
