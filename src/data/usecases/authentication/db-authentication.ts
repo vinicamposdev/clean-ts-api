@@ -1,9 +1,11 @@
-import { IHashCompare } from '@/data/protocols/cryptography/hash-compare'
-import { ITokenGenerator } from '@/data/protocols/cryptography/token-generator'
-import { ILoadAccountByEmailRepository } from '@/data/protocols/db/load-account-by-email-repository'
-import { IUpdateAccessTokenRepository } from '@/data/protocols/db/update-access-token-repository'
-import { IAuthenticationModel, IAuthentication } from '@/domain/usecases/authentication'
-
+import {
+  IHashCompare,
+  ITokenGenerator,
+  ILoadAccountByEmailRepository,
+  IUpdateAccessTokenRepository,
+  IAuthenticationModel,
+  IAuthentication
+} from './db-authentication-protocals'
 export class DbAuthentication implements IAuthentication {
   private readonly loadAccountByEmailRepository: ILoadAccountByEmailRepository
   private readonly hashComparer: IHashCompare
