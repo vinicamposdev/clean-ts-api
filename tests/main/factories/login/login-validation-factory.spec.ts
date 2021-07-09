@@ -1,9 +1,9 @@
 import { makeLoginValidation } from '@/main/factories/login/login-validation-factory'
-import { EmailValidation, RequiredFieldValidation, ValidationComposite } from '@/presentation/helpers/validators'
+import { EmailValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 import { IValidation } from '@/presentation/protocols/validation'
-import { IEmailValidator } from '@/presentation/protocols/email-validator'
+import { IEmailValidator } from '@/validation/protocols/email-validator'
 
-jest.mock('@/presentation/helpers/validators/validation-composite')
+jest.mock('@/validation/validators/validation-composite')
 
 const makeEmailValidator = (): IEmailValidator => {
   class EmailValidatorStub implements IEmailValidator {
