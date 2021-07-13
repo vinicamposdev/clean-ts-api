@@ -1,10 +1,12 @@
 import { IHttpRequest, IHttpResponse, IController, IAddAccount } from './signup-controller-protocols'
 import { badRequest, serverError, ok } from '@/presentation/helpers/http/http-helpers'
 import { IValidation } from '@/presentation/protocols/validation'
+import { IAuthentication } from '@/domain/usecases/authentication'
 
 export class SignUpController implements IController {
   constructor (
     private readonly addAccount: IAddAccount,
+    private readonly authentication: IAuthentication,
     private readonly validation: IValidation
   ) {}
 
@@ -17,15 +19,17 @@ export class SignUpController implements IController {
 
       const { name, email, password } = httpRequest.body
 
-      const account = await this.addAccount.add({
+      await this.addAccount.add({
         name,
         email,
         password
       })
 
-      return ok(account)
+      const accessToken = await this.authentication.auth({ email, password })
+
+      return ok({ accessToken })
     } catch (error) {
-      return serverError()
+      return serverError(error)
     }
   }
 }
