@@ -1,4 +1,3 @@
-
 import { LoginController } from '@/presentation/controllers/login/login-controller'
 import { IController } from '@/presentation/protocols'
 import { makeLoginValidation } from './login-validation-factory'
