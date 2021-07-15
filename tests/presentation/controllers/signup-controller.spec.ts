@@ -1,14 +1,16 @@
 import { IAuthentication, IAuthenticationModel } from '@/domain/usecases/authentication'
 import { SignUpController } from '@/presentation/controllers/signup/signup-controller'
 import { IAccountModel, IAddAccountModel, IAddAccount, IHttpRequest } from '@/presentation/controllers/signup/signup-controller-protocols'
-import { MissingParamError, ServerError } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helpers'
+import { EmailAlreadyInUse, MissingParamError, ServerError } from '@/presentation/errors'
+import { badRequest, forbiden, ok, serverError } from '@/presentation/helpers/http/http-helpers'
 import { IValidation } from '@/presentation/protocols/validation'
 
 const makeFakeRequest = (): IHttpRequest => ({
   body: {
-    email: 'any_email@email.com',
-    password: 'any_password'
+    name: 'any_mame',
+    email: 'any_email@mail.com',
+    password: 'any_password',
+    passwordConfirmation: 'any_password'
   }
 })
 
@@ -71,7 +73,7 @@ describe('Signup Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(makeFakeRequest())
     expect(authSpy).toHaveBeenCalledWith({
-      email: 'any_email@email.com',
+      email: 'any_email@mail.com',
       password: 'any_password'
     })
   })
@@ -136,6 +138,18 @@ describe('Signup Controller', () => {
 
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('Should return 403 if AddAccount returns null', async () => {
+    const { sut, addAccountStub } = makeSut()
+
+    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(
+      new Promise(resolve => resolve(null))
+    )
+
+    const httpResponse = await sut.handle(makeFakeRequest())
+
+    expect(httpResponse).toEqual(forbiden(new EmailAlreadyInUse()))
   })
 
   test('Should return 200 if a valid data is provided', async () => {
