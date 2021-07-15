@@ -1,7 +1,7 @@
 import { MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http/http-helpers'
-import { LoginController } from '@/presentation/controllers/login/login-controller'
-import { IHttpRequest, IAuthentication, IValidation, IAuthenticationModel } from '@/presentation/controllers/login/login-controller-protocols'
+import { LoginController } from '@/presentation/controllers/auth/login/login-controller'
+import { IHttpRequest, IAuthentication, IValidation, IAuthenticationModel } from '@/presentation/controllers/auth/login/login-controller-protocols'
 
 const makeFakeRequest = (): IHttpRequest => ({
   body: {

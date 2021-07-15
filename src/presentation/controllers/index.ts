@@ -1,2 +1,2 @@
-export * from './signup/signup-controller'
-export * from './login/login-controller'
+export * from './auth/signup/signup-controller'
+export * from './auth/login/login-controller'

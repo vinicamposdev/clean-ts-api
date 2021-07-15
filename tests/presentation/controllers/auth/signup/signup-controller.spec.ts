@@ -1,6 +1,6 @@
 import { IAuthentication, IAuthenticationModel } from '@/domain/usecases/authentication'
-import { SignUpController } from '@/presentation/controllers/signup/signup-controller'
-import { IAccountModel, IAddAccountModel, IAddAccount, IHttpRequest } from '@/presentation/controllers/signup/signup-controller-protocols'
+import { SignUpController } from '@/presentation/controllers/auth/signup/signup-controller'
+import { IAccountModel, IAddAccountModel, IAddAccount, IHttpRequest } from '@/presentation/controllers/auth/signup/signup-controller-protocols'
 import { EmailAlreadyInUse, MissingParamError, ServerError } from '@/presentation/errors'
 import { badRequest, forbiden, ok, serverError } from '@/presentation/helpers/http/http-helpers'
 import { IValidation } from '@/presentation/protocols/validation'
