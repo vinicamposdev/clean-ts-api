@@ -1,5 +1,5 @@
 import { IController, IHttpRequest, IHttpResponse, IValidation, IAddSurvey } from './add-survey-controller-protocols'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helpers'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http/http-helpers'
 
 export class AddSurveyController implements IController {
   constructor (
@@ -18,7 +18,7 @@ export class AddSurveyController implements IController {
         question,
         answers
       })
-      return await new Promise(resolve => resolve(null))
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
