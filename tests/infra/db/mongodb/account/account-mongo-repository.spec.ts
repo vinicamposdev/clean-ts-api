@@ -71,6 +71,7 @@ describe('Account Mongo Repository', () => {
       expect(account).toBeFalsy()
     })
   })
+
   describe('updateAccessToken()', () => {
     test('Should update the account accessToken on updateAccessToken success', async () => {
       const sut = makeSut()
@@ -88,5 +89,35 @@ describe('Account Mongo Repository', () => {
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account).toBeTruthy()
     })
+  })
+
+  describe('loadByToken()', () => {
+    test('Should return an acoount on loadByToken success', async () => {
+      const sut = makeSut()
+
+      const newAccount = {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        accessToken: 'any_token'
+      }
+      await accountCollection.insertOne(newAccount)
+
+      const account = await sut.loadByToken('any_token')
+
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+      expect(account.name).toBe(newAccount.name)
+      expect(account.email).toBe(newAccount.email)
+      expect(account.password).toBe(newAccount.password)
+    })
+
+    // test('Should return null on loadByToken fails', async () => {
+    //   const sut = makeSut()
+
+    //   const account = await sut.loadByToken('any_email@mail.com')
+
+    //   expect(account).toBeFalsy()
+    // })
   })
 })
