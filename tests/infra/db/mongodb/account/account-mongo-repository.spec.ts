@@ -65,9 +65,7 @@ describe('Account Mongo Repository', () => {
 
     test('Should return null on loadByEmail fails', async () => {
       const sut = makeSut()
-
       const account = await sut.loadByEmail('any_email@mail.com')
-
       expect(account).toBeFalsy()
     })
   })
@@ -132,12 +130,11 @@ describe('Account Mongo Repository', () => {
       expect(account.email).toBe(newAccount.email)
       expect(account.password).toBe(newAccount.password)
     })
-    // test('Should return null on loadByToken fails', async () => {
-    //   const sut = makeSut()
 
-    //   const account = await sut.loadByToken('any_email@mail.com')
-
-    //   expect(account).toBeFalsy()
-    // })
+    test('Should return null on loadByToken fails', async () => {
+      const sut = makeSut()
+      const account = await sut.loadByToken('any_token')
+      expect(account).toBeFalsy()
+    })
   })
 })
