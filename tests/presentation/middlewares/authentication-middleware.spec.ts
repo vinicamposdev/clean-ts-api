@@ -33,9 +33,9 @@ interface ISutTypes {
   sut: AuthenticationMiddleware
 }
 
-const makeSut = (): ISutTypes => {
+const makeSut = (role?: string): ISutTypes => {
   const loadAccountByTokenStub = makeLoadAccountByTokenStub()
-  const sut = new AuthenticationMiddleware(loadAccountByTokenStub)
+  const sut = new AuthenticationMiddleware(loadAccountByTokenStub, role)
 
   return {
     loadAccountByTokenStub,
@@ -54,7 +54,7 @@ describe('Authentication Middleware', () => {
     const loadSpy = jest.spyOn(loadAccountByTokenStub, 'load')
     await sut.handle(makeFakeRequest())
 
-    expect(loadSpy).toHaveBeenCalledWith('any_token')
+    expect(loadSpy).toHaveBeenCalledWith('any_token', 'default')
   })
 
   test('Should return 403 if LoadAccountByToken returns null', async () => {
@@ -73,5 +73,14 @@ describe('Authentication Middleware', () => {
     jest.spyOn(loadAccountByTokenStub, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should call LoadAccountByToken with role if exists', async () => {
+    const role = 'any_role'
+    const { sut, loadAccountByTokenStub } = makeSut(role)
+    const loadSpy = jest.spyOn(loadAccountByTokenStub, 'load')
+    await sut.handle(makeFakeRequest())
+
+    expect(loadSpy).toHaveBeenCalledWith('any_token', role)
   })
 })
