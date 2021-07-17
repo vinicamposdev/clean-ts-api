@@ -1,9 +1,11 @@
-import { forbiden, ok, serverError } from '@/presentation/helpers/http/http-helpers'
-import { AccessDeniedError } from '@/presentation/errors'
-import { AuthenticationMiddleware } from '@/presentation/middlewares/authentication-middleware'
-import { ILoadAccountByToken } from '@/domain/usecases/load-account-by-token'
-import { IAccountModel } from '@/domain/models/account'
-import { IHttpRequest } from '../protocols'
+import {
+  forbiden, ok, serverError,
+  AccessDeniedError,
+  AuthenticationMiddleware,
+  ILoadAccountByToken,
+  IAccountModel,
+  IHttpRequest
+} from '@/presentation/middlewares/authentication-middleware-protocols'
 
 const makeFakeRequest = (): IHttpRequest => ({
   headers: {

@@ -1,7 +1,9 @@
-import { ILoadAccountByToken } from '@/domain/usecases/load-account-by-token'
-import { AccessDeniedError } from '@/presentation/errors'
-import { forbiden, ok, serverError } from '@/presentation/helpers/http/http-helpers'
-import { IHttpRequest, IHttpResponse, IMiddleware } from '@/presentation/protocols'
+import {
+  ILoadAccountByToken,
+  AccessDeniedError,
+  forbiden, ok, serverError,
+  IHttpRequest, IHttpResponse, IMiddleware
+} from './authentication-middleware-protocols'
 
 export class AuthenticationMiddleware implements IMiddleware {
   constructor (
