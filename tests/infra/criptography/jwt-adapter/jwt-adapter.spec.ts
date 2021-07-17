@@ -48,7 +48,7 @@ describe('Jwt Adapter', () => {
     test('Should call verify with correct values', () => {
       const sut = makeSut()
       const verifySpy = jest.spyOn(jwt, 'verify')
-      sut.dencrypt('any_token')
+      sut.decrypt('any_token')
 
       expect(verifySpy).toHaveBeenCalledWith('any_token', 'secret')
     })
