@@ -52,5 +52,12 @@ describe('Jwt Adapter', () => {
 
       expect(verifySpy).toHaveBeenCalledWith('any_token', 'secret')
     })
+
+    test('Should return a value on verify success', () => {
+      const sut = makeSut()
+      const value = sut.decrypt('any_value')
+
+      expect(value).toBe('any_value')
+    })
   })
 })
