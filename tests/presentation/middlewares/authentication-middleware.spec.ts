@@ -11,30 +11,40 @@ const makeFakeAccount = (): IAccountModel => ({
   password: 'hashed_password'
 })
 
+const makeLoadAccountByTokenStub = (): ILoadAccountByToken => {
+  class LoadAccountByTokenStub implements ILoadAccountByToken {
+    async load (accessToken: string, role?: string): Promise<IAccountModel> {
+      return await new Promise(resolve => resolve(makeFakeAccount()))
+    }
+  }
+
+  return new LoadAccountByTokenStub()
+}
+
+interface ISutTypes {
+  loadAccountByTokenStub: ILoadAccountByToken
+  sut: AuthenticationMiddleware
+}
+
+const makeSut = (): ISutTypes => {
+  const loadAccountByTokenStub = makeLoadAccountByTokenStub()
+  const sut = new AuthenticationMiddleware(loadAccountByTokenStub)
+
+  return {
+    loadAccountByTokenStub,
+    sut
+  }
+}
 describe('Authentication Middleware', () => {
   test('Should return 403 if no x-access-token existis in headers', async () => {
-    class LoadAccountByTokenStub implements ILoadAccountByToken {
-      async load (accessToken: string, role?: string): Promise<IAccountModel> {
-        return await new Promise(resolve => resolve(makeFakeAccount()))
-      }
-    }
-
-    const loadAccountByTokenStub = new LoadAccountByTokenStub()
-    const sut = new AuthenticationMiddleware(loadAccountByTokenStub)
+    const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(forbiden(new AccessDeniedError()))
   })
   // Ensure that Authentication Middleware is calling the Dependency on the right way
   test('Should call LoadAccountByToken with correct accessToken', async () => {
-    class LoadAccountByTokenStub implements ILoadAccountByToken {
-      async load (accessToken: string, role?: string): Promise<IAccountModel> {
-        return await new Promise(resolve => resolve(makeFakeAccount()))
-      }
-    }
-
-    const loadAccountByTokenStub = new LoadAccountByTokenStub()
+    const { sut, loadAccountByTokenStub } = makeSut()
     const loadSpy = jest.spyOn(loadAccountByTokenStub, 'load')
-    const sut = new AuthenticationMiddleware(loadAccountByTokenStub)
     await sut.handle({
       headers: {
         'x-access-token': 'any_token'
