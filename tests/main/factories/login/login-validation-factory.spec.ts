@@ -1,4 +1,4 @@
-import { makeLoginValidation } from '@/main/factories/controllers/login/login-validation-factory'
+import { makeLoginValidation } from '@/main/factories/controllers/auth/login/login-validation-factory'
 import { EmailValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 import { IValidation } from '@/presentation/protocols/validation'
 import { IEmailValidator } from '@/validation/protocols/email-validator'
