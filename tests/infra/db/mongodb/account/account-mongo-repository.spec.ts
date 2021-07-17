@@ -110,7 +110,39 @@ describe('Account Mongo Repository', () => {
       expect(account.password).toBe(newAccount.password)
     })
 
-    test('Should return an acoount with role', async () => {
+    test('Should return an acoount with admin role', async () => {
+      const sut = makeSut()
+
+      const newAccount = {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        accessToken: 'any_token'
+      }
+      await accountCollection.insertOne(newAccount)
+
+      const account = await sut.loadByToken('any_token', 'admin')
+
+      expect(account).toBeFalsy()
+    })
+
+    test('Should return an acoount with admin role', async () => {
+      const sut = makeSut()
+
+      const newAccount = {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        accessToken: 'any_token'
+      }
+      await accountCollection.insertOne(newAccount)
+
+      const account = await sut.loadByToken('any_token', 'admin')
+
+      expect(account).toBeFalsy()
+    })
+
+    test('Should return an acoount on loadByToken if user is admin', async () => {
       const sut = makeSut()
 
       const newAccount = {
@@ -118,11 +150,11 @@ describe('Account Mongo Repository', () => {
         email: 'any_email@mail.com',
         password: 'any_password',
         accessToken: 'any_token',
-        role: 'any_role'
+        role: 'admin'
       }
       await accountCollection.insertOne(newAccount)
 
-      const account = await sut.loadByToken('any_token', 'any_role')
+      const account = await sut.loadByToken('any_token')
 
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
@@ -130,7 +162,6 @@ describe('Account Mongo Repository', () => {
       expect(account.email).toBe(newAccount.email)
       expect(account.password).toBe(newAccount.password)
     })
-
     test('Should return null on loadByToken fails', async () => {
       const sut = makeSut()
       const account = await sut.loadByToken('any_token')
