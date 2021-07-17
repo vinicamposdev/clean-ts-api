@@ -47,7 +47,7 @@ const makeValidation = (): IValidation => {
   }
   return new ValidationStub()
 }
-interface ISutTypes {
+type ISutTypes = {
   sut: SignUpController
   addAccountStub: IAddAccount
   authenticationStub: IAuthentication

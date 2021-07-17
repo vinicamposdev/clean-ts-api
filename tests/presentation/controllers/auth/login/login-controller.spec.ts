@@ -28,7 +28,7 @@ const makeAuthenticationStub = (): IAuthentication => {
   return new AuthenticationStub()
 }
 
-interface ISutTypes {
+type ISutTypes = {
   sut: LoginController
   authenticationStub: IAuthentication
   validationStub: IValidation

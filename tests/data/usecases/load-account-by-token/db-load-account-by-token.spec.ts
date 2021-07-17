@@ -28,7 +28,7 @@ const makeDecrypterStub = (): IDecrypter => {
   return new DecrypterStub()
 }
 
-interface ISutTypes {
+type ISutTypes = {
   sut: DbLoadAccountByToken
   decrypterStub: IDecrypter
   loadAccountByTokenRepository: ILoadAccountByTokenRepository

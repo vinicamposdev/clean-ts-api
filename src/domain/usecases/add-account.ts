@@ -1,5 +1,5 @@
 import { IAccountModel } from '../models/account'
-export interface IAddAccountModel {
+export type IAddAccountModel = {
   name: string
   email: string
   password: string
