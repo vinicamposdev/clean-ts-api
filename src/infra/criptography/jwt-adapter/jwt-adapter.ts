@@ -8,4 +8,9 @@ export class JwtAdapter implements IEncrypter {
     const accessToken = jwt.sign({ id: value }, this.secret)
     return accessToken
   }
+
+  dencrypt (value: string): string {
+    jwt.verify(value, this.secret)
+    return null
+  }
 }
