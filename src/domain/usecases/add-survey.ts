@@ -1,6 +1,7 @@
 export type IAddSurveyModel = {
   question: string
   answers: ISurveyAnswers[]
+  date: Date
 }
 
 export type ISurveyAnswers = {
