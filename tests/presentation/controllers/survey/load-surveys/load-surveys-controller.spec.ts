@@ -3,6 +3,7 @@ import MockDate from 'mockdate'
 import { SurveyModel } from '@/domain/models/survey'
 import { ILoadSurveys } from '@/domain/usecases/load-surveys'
 import { LoadSurveysController } from '@/presentation/controllers/survey/load-surveys/load-surveys-controller'
+import { ok } from '@/presentation/middlewares/authentication-middleware-protocols'
 
 const makeFakeSurveys = (): SurveyModel[] => {
   return [{
@@ -53,5 +54,11 @@ describe('LoadSurveys Controller', () => {
     const loadSpy = jest.spyOn(loadSurveysStub, 'load')
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
+  })
+
+  test('Should call LoadSurveys', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({ body: makeFakeSurveys() })
+    expect(httpResponse).toEqual(ok(makeFakeSurveys()))
   })
 })
