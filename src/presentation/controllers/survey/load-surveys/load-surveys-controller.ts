@@ -1,5 +1,5 @@
 import { ILoadSurveys } from '@/domain/usecases/load-surveys'
-import { ok, serverError } from '@/presentation/middlewares/authentication-middleware-protocols'
+import { noContent, ok, serverError } from '@/presentation/middlewares/authentication-middleware-protocols'
 import { IController, IHttpRequest, IHttpResponse } from '@/presentation/protocols'
 
 export class LoadSurveysController implements IController {
@@ -7,7 +7,7 @@ export class LoadSurveysController implements IController {
   async handle (httpRequest: IHttpRequest): Promise<IHttpResponse> {
     try {
       const surveys = await this.loadSurveys.load()
-      return ok(surveys)
+      return surveys.length ? ok(surveys) : noContent()
     } catch (error) {
       return serverError(error)
     }
