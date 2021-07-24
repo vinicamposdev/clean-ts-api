@@ -4,6 +4,7 @@ import { SurveyModel } from '@/domain/models/survey'
 import { IAddSurveyModel } from '@/domain/usecases/add-survey'
 import { ILoadSurveyById } from '@/domain/usecases/load-survey-by-id'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { ObjectId } from 'mongodb'
 
 export class SurveyMongoRepository implements IAddSurveyRepository, ILoadSurveysRepository, ILoadSurveyById {
   async add (surveyData: IAddSurveyModel): Promise<void> {
@@ -19,7 +20,7 @@ export class SurveyMongoRepository implements IAddSurveyRepository, ILoadSurveys
 
   async loadById (id: string): Promise<SurveyModel> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
-    const survey = await surveyCollection.findOne({ _id: id })
+    const survey = await surveyCollection.findOne({ _id: new ObjectId(id) })
     return survey && MongoHelper.map(survey)
   }
 }

@@ -1,22 +1,20 @@
 import { ISaveSurveyResult, SaveSurveyResultModel } from '@/domain/usecases/save-survey-result'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { SurveyResultModel } from '@/domain/models/survey-result'
+import { ObjectId } from 'mongodb'
 
 export class SurveyResultMongoRepository implements ISaveSurveyResult {
-  async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+  async save (data: SaveSurveyResultModel): Promise<void> {
     const surveyResultCollection = await MongoHelper.getCollection('surveyResults')
-    const res = await surveyResultCollection.findOneAndUpdate({
-      surveyId: data.surveyId,
-      accountId: data.accountId
+    await surveyResultCollection.findOneAndUpdate({
+      surveyId: new ObjectId(data.surveyId),
+      accountId: new ObjectId(data.accountId)
     }, {
       $set: {
         answer: data.answer,
         date: data.date
       }
     }, {
-      upsert: true,
-      returnOriginal: false
+      upsert: true
     })
-    return res.value && MongoHelper.map(res.value)
   }
 }
