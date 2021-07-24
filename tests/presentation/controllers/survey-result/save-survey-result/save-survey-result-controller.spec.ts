@@ -2,7 +2,7 @@ import { ILoadSurveyById } from '@/domain/usecases/load-survey-by-id'
 import { SaveSurveyResultController } from '@/presentation/controllers/survey-result/save-survey-result/save-survey-result-controller'
 import { IHttpRequest } from '@/presentation/protocols'
 import { SurveyModel } from '@/domain/models/survey'
-import { forbiden, InvalidParamError } from '@/presentation/middlewares/authentication-middleware-protocols'
+import { forbiden, InvalidParamError, serverError } from '@/presentation/middlewares/authentication-middleware-protocols'
 
 const makeFakeRequest = (): IHttpRequest => ({
   params: {
@@ -62,5 +62,15 @@ describe('SaveSurveyResult Controller', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
 
     expect(httpResponse).toEqual(forbiden(new InvalidParamError('surveyId')))
+  })
+
+  test('Should return 500 if LoadSurveyById throws', async () => {
+    const { sut, loadSurveyByIdStub } = makeSut()
+    jest.spyOn(loadSurveyByIdStub, 'loadById')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+
+    const httpResponse = await sut.handle(makeFakeRequest())
+
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
