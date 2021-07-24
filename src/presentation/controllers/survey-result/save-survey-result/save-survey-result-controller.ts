@@ -7,8 +7,15 @@ export class SaveSurveyResultController implements IController {
 
   async handle (httpRequest: IHttpRequest): Promise<IHttpResponse> {
     try {
-      const survey = await this.loadSurveyById.loadById(httpRequest.params.surveyId)
-      if (!survey) {
+      const { surveyId } = httpRequest.params
+      const { answer } = httpRequest.body
+      const survey = await this.loadSurveyById.loadById(surveyId)
+      if (survey) {
+        const answers = survey.answers.map(a => a.answer)
+        if (!answers.includes(answer)) {
+          return forbiden(new InvalidParamError('answer'))
+        }
+      } else {
         return forbiden(new InvalidParamError('surveyId'))
       }
       return null
