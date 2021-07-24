@@ -4,8 +4,8 @@ import { SurveyResultModel } from '@/domain/models/survey-result'
 
 export class SurveyResultMongoRepository implements ISaveSurveyResult {
   async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-    const surveyCollection = await MongoHelper.getCollection('surveys')
-    const res = await surveyCollection.findOneAndUpdate({
+    const surveyResultCollection = await MongoHelper.getCollection('surveyResults')
+    const res = await surveyResultCollection.findOneAndUpdate({
       surveyId: data.surveyId,
       accountId: data.accountId
     }, {
