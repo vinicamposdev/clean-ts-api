@@ -2,7 +2,7 @@ import MockDate from 'mockdate'
 
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { SurveyResultMongoRepository } from '@/infra/db/mongodb/survey-result/survey-result-mongo-repository'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { SurveyModel } from '@/domain/models/survey'
 import { IAccountModel } from '@/domain/models/account'
 
@@ -24,7 +24,7 @@ const makeSurvey = async (): Promise<SurveyModel> => {
     date: new Date()
   })
 
-  return res.ops[0]
+  return MongoHelper.map(res.ops[0])
 }
 const makeAccount = async (): Promise<IAccountModel> => {
   const res = await accountCollection.insertOne({
@@ -33,7 +33,7 @@ const makeAccount = async (): Promise<IAccountModel> => {
     password: 'any_password'
   })
 
-  return res.ops[0]
+  return MongoHelper.map(res.ops[0])
 }
 
 const makeSut = (): SurveyResultMongoRepository => {
@@ -65,36 +65,39 @@ describe('Save Survey Result Mongo Repository', () => {
       const survey = await makeSurvey()
       const account = await makeAccount()
       const sut = makeSut()
-      const surveyResult = await sut.save({
+      await sut.save({
         surveyId: survey.id,
         accountId: account.id,
         answer: survey.answers[0].answer,
         date: new Date()
       })
+      const surveyResult = await surveyResultCollection.find().toArray()
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.id).toBeTruthy()
-      expect(surveyResult.answer).toBe(survey.answers[0].answer)
     })
 
     test('Should update survey result if its not new', async () => {
       const survey = await makeSurvey()
       const account = await makeAccount()
-      const res = await surveyResultCollection.insertOne({
-        surveyId: survey.id,
-        accountId: account.id,
+      await surveyResultCollection.insertOne({
+        surveyId: new ObjectId(survey.id),
+        accountId: new ObjectId(account.id),
         answer: survey.answers[0].answer,
         date: new Date()
       })
       const sut = makeSut()
-      const surveyResult = await sut.save({
+      await sut.save({
         surveyId: survey.id,
         accountId: account.id,
         answer: survey.answers[1].answer,
         date: new Date()
       })
+      const surveyResult = await surveyResultCollection
+        .find({
+          surveyId: survey.id,
+          accountId: account.id
+        })
+        .toArray()
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.id).toEqual(res.ops[0]._id)
-      expect(surveyResult.answer).toBe(survey.answers[1].answer)
     })
   })
 })
