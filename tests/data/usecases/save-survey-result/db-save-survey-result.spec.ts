@@ -18,8 +18,8 @@ const makeFakeSurveyResult = (): SurveyResultModel => Object.assign({}, makeFake
 
 const makeSaveSurveyResultRepositorySutb = (): ISaveSurveyResultRepository => {
   class SaveSurveyResultRepositorySutb implements ISaveSurveyResultRepository {
-    async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-      return await new Promise(resolve => resolve(makeFakeSurveyResult()))
+    async save (data: SaveSurveyResultModel): Promise<void> {
+      await new Promise(resolve => resolve(makeFakeSurveyResult()))
     }
   }
   return new SaveSurveyResultRepositorySutb()
