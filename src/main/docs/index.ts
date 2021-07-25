@@ -1,5 +1,6 @@
-import schemas from './schemas'
 import components from './components'
+import paths from './paths'
+import schemas from './schemas'
 
 export default {
   openapi: '3.0.0',
@@ -32,6 +33,7 @@ export default {
     name: 'Enquete',
     description: 'APIs relacionadas a Enquete'
   }],
-  schemas,
-  components
+  components,
+  paths,
+  schemas
 }
