@@ -31,6 +31,7 @@
     "mongodb": "^3.6.10",
     "nodemon": "^2.0.10",
     "rimraf": "^3.0.2",
+    "swagger-ui-express": "^4.1.6",
     "validator": "^13.6.0"
   },
   "devDependencies": {
