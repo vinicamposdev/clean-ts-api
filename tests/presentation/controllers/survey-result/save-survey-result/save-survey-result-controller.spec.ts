@@ -6,18 +6,23 @@ import { SurveyModel } from '@/domain/models/survey'
 import { SaveSurveyResultController } from '@/presentation/controllers/survey-result/save-survey-result/save-survey-result-controller'
 import { InvalidParamError } from '@/presentation/errors'
 import { forbiden, serverError } from '@/presentation/helpers/http/http-helpers'
-import { ISaveSurveyResult, SaveSurveyResultModel } from '@/domain/usecases/save-survey-result'
+import { ISaveSurveyResult, SaveSurveyResultParams } from '@/domain/usecases/save-survey-result'
 import { SurveyResultModel } from '@/domain/models/survey-result'
 
-const makeFakeSurveyResultData = (): SaveSurveyResultModel => ({
-  surveyId: 'any_survey_id',
+const mockSurveyResult = (): SurveyResultModel => ({
   accountId: 'any_account_id',
-  answer: 'any_answer',
-  date: new Date()
-})
-
-const makeFakeSurveyResult = (): SurveyResultModel => Object.assign({}, makeFakeSurveyResultData(), {
-  id: 'any_id'
+  answers: [{
+    answer: 'any_answer',
+    count: 1,
+    percent: 60,
+    image: 'any_image'
+  }, {
+    answer: 'other_answer',
+    count: 10,
+    percent: 40
+  }],
+  date: new Date(),
+  surveyId: 'any_survey_id'
 })
 
 const mockLoadSurveyById = (): ILoadSurveyById => {
@@ -31,8 +36,8 @@ const mockLoadSurveyById = (): ILoadSurveyById => {
 
 const mockSaveSurveyResultStub = (): ISaveSurveyResult => {
   class SaveSurveyResultStub implements ISaveSurveyResult {
-    async save (data: SaveSurveyResultModel): Promise<void> {
-      await Promise.resolve(makeFakeSurveyResult())
+    async save (data: SaveSurveyResultParams): Promise<void> {
+      await Promise.resolve(mockSurveyResult())
     }
   }
   return new SaveSurveyResultStub()
@@ -146,6 +151,6 @@ describe('SaveSurveyResult Controller', () => {
   // test('Should return 200 on success', async () => {
   //   const { sut } = makeSut()
   //   const httpResponse = await sut.handle(makeFakeRequest())
-  //   expect(httpResponse).toEqual(ok(makeFakeSurveyResult()))
+  //   expect(httpResponse).toEqual(ok(mockSurveyResult()))
   // })
 })
