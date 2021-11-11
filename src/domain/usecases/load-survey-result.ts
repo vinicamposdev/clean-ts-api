@@ -1,11 +1,11 @@
 import { SurveyResultModel } from '../models/survey-result'
 
-export namespace SaveSurveyResult {
+export namespace LoadSurveyResult {
   export type Params = string
 
   export type Result = SurveyResultModel
 }
 
-export interface ISaveSurveyResult {
-  save: (surveyId: SaveSurveyResult.Params) => Promise<SaveSurveyResult.Result>
+export interface ILoadSurveyResult {
+  load: (surveyId: LoadSurveyResult.Params) => Promise<LoadSurveyResult.Result>
 }
