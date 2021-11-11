@@ -1,12 +1,12 @@
-import { ISaveSurveyResult, SaveSurveyResultParams } from '@/domain/usecases/save-survey-result'
+import { ISaveSurveyResult, SaveSurveyResult } from '@/domain/usecases/save-survey-result'
 import { MongoHelper, QueryBuilder } from '@/infra/db/mongodb/helpers'
 import { ObjectId } from 'mongodb'
 import { SurveyResultModel } from '@/domain/models/survey-result'
 
 export class SurveyResultMongoRepository implements ISaveSurveyResult {
-  async save (data: SaveSurveyResultParams): Promise<void> {
+  async save (data: SaveSurveyResult.Params): Promise<SaveSurveyResult.Result> {
     const surveyResultCollection = await MongoHelper.getCollection('surveyResults')
-    await surveyResultCollection.findOneAndUpdate({
+    const rawData = await surveyResultCollection.findOneAndUpdate({
       surveyId: new ObjectId(data.surveyId),
       accountId: new ObjectId(data.accountId)
     }, {
@@ -17,6 +17,7 @@ export class SurveyResultMongoRepository implements ISaveSurveyResult {
     }, {
       upsert: true
     })
+    return rawData.value
   }
 
   async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
