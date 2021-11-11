@@ -1,37 +1,21 @@
 import MockDate from 'mockdate'
 
 import { DbSaveSurveyResult } from '@/data/usecases/save-survey-result/db-save-survey-result'
-import { SurveyResultModel } from '@/domain/models/survey-result'
-import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result'
+import { SaveSurveyResult } from '@/domain/usecases/save-survey-result'
 import { ISaveSurveyResultRepository } from '@/data/protocols/db/survey/save-survey-result-repository'
+import { mockSurveyResultModel } from '@/tests/domain/mocks/mock-survey-results'
 
-const makeFakeSurveyResultData = (): SaveSurveyResultParams => ({
+const makeFakeSurveyResultData = (): SaveSurveyResult.Params => ({
   surveyId: 'any_survey_id',
   accountId: 'any_account_id',
   answer: 'any_answer',
   date: new Date()
 })
 
-const mockSurveyResult = (): SurveyResultModel => ({
-  accountId: 'any_account_id',
-  answers: [{
-    answer: 'any_answer',
-    count: 1,
-    percent: 60,
-    image: 'any_image'
-  }, {
-    answer: 'other_answer',
-    count: 10,
-    percent: 40
-  }],
-  date: new Date(),
-  surveyId: 'any_survey_id'
-})
-
 const makeSaveSurveyResultRepositorySutb = (): ISaveSurveyResultRepository => {
   class SaveSurveyResultRepositorySutb implements ISaveSurveyResultRepository {
-    async save (data: SaveSurveyResultParams): Promise<void> {
-      await new Promise(resolve => resolve(mockSurveyResult()))
+    async save (data: SaveSurveyResult.Params): Promise<SaveSurveyResult.Result> {
+      return await new Promise(resolve => resolve(mockSurveyResultModel()))
     }
   }
   return new SaveSurveyResultRepositorySutb()
@@ -78,6 +62,6 @@ describe('DbSaveSurveyResult UseCase', () => {
   // test('Should return a survey on success', async () => {
   //   const { sut } = makeSut()
   //   const surveys = await sut.save(makeFakeSurveyResultData())
-  //   expect(surveys).toEqual(mockSurveyResult())
+  //   expect(surveys).toEqual(mockSurveyResultModel())
   // })
 })
