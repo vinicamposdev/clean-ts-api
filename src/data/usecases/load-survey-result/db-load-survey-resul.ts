@@ -7,7 +7,7 @@ export class DbLoadSurveyResult implements ILoadSurveyResult {
   ) {}
 
   async load (surveyId: string): Promise<LoadSurveyResult.Result> {
-    await this.loadSurveyResult.loadBySurveyId(surveyId)
-    return null
+    const surveyResult = await this.loadSurveyResult.loadBySurveyId(surveyId)
+    return surveyResult
   }
 }
