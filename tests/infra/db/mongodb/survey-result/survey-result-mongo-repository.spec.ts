@@ -142,7 +142,7 @@ describe('SurveyResultMongoRepository', () => {
       expect(surveyResult.answers[2].percent).toBe(0)
     })
 
-    test('Should load survey result', async () => {
+    test('Should returns null on LoadSurvey without answers', async () => {
       const survey = await makeSurvey()
       const sut = makeSut()
       const surveyResult = await sut.loadBySurveyId(survey.id)
