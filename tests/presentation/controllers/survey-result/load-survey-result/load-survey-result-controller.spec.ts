@@ -5,7 +5,7 @@ import { LoadSurveyResultController } from '@/presentation/controllers/survey-re
 import { ILoadSurveyById } from '@/domain/usecases/load-survey-by-id'
 import { mockLoadSurveyByIdRepository, throwError } from '@/tests/data/mocks'
 import { InvalidParamError } from '@/presentation/errors'
-import { forbiden, serverError } from '@/presentation/middlewares/authentication-middleware-protocols'
+import { forbiden, serverError, ok } from '@/presentation/middlewares/authentication-middleware-protocols'
 import { mockLoadSurveyResult } from '@/tests/presentation/mocks/mock-survey-result'
 import { ILoadSurveyResult } from '@/domain/usecases/load-survey-result'
 const makeFakeRequest = (): IHttpRequest => ({
@@ -73,5 +73,11 @@ describe('SaveSurveyResultController', () => {
     jest.spyOn(loadSurveyResultStub, 'load').mockImplementationOnce(throwError)
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok(mockLoadSurveyResult()))
   })
 })
