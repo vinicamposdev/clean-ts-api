@@ -1,6 +1,8 @@
+import MockDate from 'mockdate'
+
 import { ILoadSurveyResultRepository } from '@/data/protocols/db/survey/load-survey-result-repository'
 import { DbLoadSurveyResult } from '@/data/usecases/load-survey-result/db-load-survey-resul'
-import { mockLoadSurveyResultRepository, mockSaveSurveyResultRepository, throwError } from '@/tests/data/mocks'
+import { mockLoadSurveyResultRepository, throwError } from '@/tests/data/mocks'
 import { mockSurveyResultModel } from '@/tests/domain/mocks/mock-survey-results'
 
 type SutTypes = {
@@ -18,6 +20,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbLoadSurveyResult UseCase', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
   test('Should call LoadSurveyResultRepository', async () => {
     const { loadSurveyResultRepositoryStub, sut } = makeSut()
     const loadBySurveyIdSpy = jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
@@ -40,6 +49,6 @@ describe('DbLoadSurveyResult UseCase', () => {
 
     const surveyResult = await sut.load('any_survey_id')
 
-    expect(surveyResult).toHaveBeenCalledWith(mockSurveyResultModel())
+    expect(surveyResult).toEqual(mockSurveyResultModel())
   })
 })

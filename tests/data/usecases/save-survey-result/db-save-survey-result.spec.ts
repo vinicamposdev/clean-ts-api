@@ -14,8 +14,8 @@ const makeFakeSurveyResultData = (): SaveSurveyResult.Params => ({
 
 const makeSaveSurveyResultRepositorySutb = (): ISaveSurveyResultRepository => {
   class SaveSurveyResultRepositorySutb implements ISaveSurveyResultRepository {
-    async save (data: SaveSurveyResult.Params): Promise<SaveSurveyResult.Result> {
-      return await new Promise(resolve => resolve(mockSurveyResultModel()))
+    async save (data: SaveSurveyResult.Params): Promise<void> {
+      await new Promise(resolve => resolve(mockSurveyResultModel()))
     }
   }
   return new SaveSurveyResultRepositorySutb()
@@ -59,9 +59,11 @@ describe('DbSaveSurveyResult UseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  // test('Should return a survey on success', async () => {
-  //   const { sut } = makeSut()
-  //   const surveys = await sut.save(makeFakeSurveyResultData())
-  //   expect(surveys).toEqual(mockSurveyResultModel())
-  // })
+  test('Should return a survey on success', async () => {
+    const { sut } = makeSut()
+
+    const promise = sut.save(makeFakeSurveyResultData())
+
+    await expect(promise).toEqual(mockSurveyResultModel())
+  })
 })
