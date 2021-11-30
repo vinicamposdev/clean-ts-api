@@ -1,7 +1,7 @@
-import { Router } from 'express'
+import { Router, Express } from 'express'
 import { readdirSync } from 'fs'
 
-export default (app: Router): void => {
+export default (app: Express): void => {
   const router = Router()
   app.use('/api', router)
 

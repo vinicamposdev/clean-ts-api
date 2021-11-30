@@ -17,3 +17,6 @@ data
 
 #VsCode
 .vscode
+
+#Static Files
+static
