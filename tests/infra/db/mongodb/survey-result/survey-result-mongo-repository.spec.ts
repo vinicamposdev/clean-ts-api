@@ -101,6 +101,7 @@ describe('SurveyResultMongoRepository', () => {
         })
         .toArray()
       expect(surveyResult).toBeTruthy()
+      expect(surveyResult.length).toBe(1)
     })
   })
 
