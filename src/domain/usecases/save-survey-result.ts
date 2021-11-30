@@ -1,4 +1,4 @@
-import { SurveyModel } from '@/domain/models/survey'
+import { SurveyResultModel } from '../models/survey-result'
 
 export namespace SaveSurveyResult {
   export type Params = {
@@ -8,7 +8,7 @@ export namespace SaveSurveyResult {
     date: Date
   }
 
-  export type Result = SurveyModel
+  export type Result = SurveyResultModel
 }
 
 export interface ISaveSurveyResult {
