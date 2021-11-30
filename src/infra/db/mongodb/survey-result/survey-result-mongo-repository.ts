@@ -3,9 +3,11 @@ import { MongoHelper, QueryBuilder } from '@/infra/db/mongodb/helpers'
 import { ObjectId } from 'mongodb'
 import { ILoadSurveyResultRepository } from '@/data/protocols/db/survey/load-survey-result-repository'
 import { SurveyResultModel } from '@/domain/models/survey-result'
+import { ILoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository'
 import { ISaveSurveyResultRepository } from '@/data/protocols/db/survey/save-survey-result-repository'
+import { SurveyModel } from '@/domain/models/survey'
 
-export class SurveyResultMongoRepository implements ISaveSurveyResultRepository, ILoadSurveyResultRepository {
+export class SurveyResultMongoRepository implements ISaveSurveyResultRepository, ILoadSurveyResultRepository, ILoadSurveyByIdRepository {
   async save (data: SaveSurveyResult.Params): Promise<void> {
     const surveyResultCollection = await MongoHelper.getCollection('surveyResults')
     await surveyResultCollection.findOneAndUpdate({
@@ -177,5 +179,12 @@ export class SurveyResultMongoRepository implements ISaveSurveyResultRepository,
       .build()
     const surveyResult = await surveyResultCollection.aggregate(query).toArray()
     return surveyResult.length ? surveyResult[0] : null
+  }
+
+  async loadById (id: string): Promise<SurveyModel> {
+    const surveyResultCollection = await MongoHelper.getCollection('surveyResults')
+    return await surveyResultCollection.findOne({
+      surveyId: new ObjectId(id)
+    })
   }
 }
