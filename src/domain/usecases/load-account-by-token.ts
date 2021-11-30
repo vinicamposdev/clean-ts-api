@@ -1,5 +1,5 @@
-import { IAccountModel } from '../models/account'
+import { AccountModel } from '@/domain/models'
 
-export interface ILoadAccountByToken {
-  load: (accessToken: string, role?: string) => Promise<IAccountModel>
+export interface LoadAccountByToken {
+  load: (accessToken: string, role?: string) => Promise<AccountModel>
 }

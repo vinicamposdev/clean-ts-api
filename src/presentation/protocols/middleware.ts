@@ -1,5 +1,5 @@
-import { IHttpResponse, IHttpRequest } from '@/presentation/protocols/http'
+import { HttpResponse, HttpRequest } from '@/presentation/protocols'
 
-export interface IMiddleware {
-  handle: (httpRequest: IHttpRequest) => Promise<IHttpResponse>
+export interface Middleware {
+  handle: (httpRequest: HttpRequest) => Promise<HttpResponse>
 }

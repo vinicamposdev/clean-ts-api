@@ -6,8 +6,9 @@ export type SurveyResultModel = {
 }
 
 type SurveyResultAnswerModel = {
+  image?: string
   answer: string
   count: number
-  image?: string
   percent: number
+  isCurrentAccountAnswer: boolean
 }

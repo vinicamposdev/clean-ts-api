@@ -1,16 +1,16 @@
-import components from './components'
 import paths from './paths'
+import components from './components'
 import schemas from './schemas'
 
 export default {
   openapi: '3.0.0',
   info: {
-    title: 'API de Enquetes',
-    description: 'Essa é a documentação da API feita no curso do instrutor da Udemy, Rodrigo Manguinho, de NodeJs usando Typescript, TDD, Clean Architecture e seguindo os princípios do SOLID e Design Patterns.',
+    title: '4Dev - Enquetes para Programadores',
+    description: 'Essa é a documentação da API feita no curso da Udemy de NodeJs usando Typescript, TDD, Clean Architecture e seguindo os princípios do SOLID e Design Patterns pelo instrutor Rodrigo Manguinho.',
     version: '1.0.0',
     contact: {
       name: 'Vinicius Campos',
-      email: 'vinic.otus@gmail.com',
+      email: 'vinicamposdev@gmail.com',
       url: 'https://www.linkedin.com/in/vinicamposdev'
     },
     license: {
@@ -33,7 +33,7 @@ export default {
     name: 'Enquete',
     description: 'APIs relacionadas a Enquete'
   }],
-  components,
   paths,
-  schemas
+  schemas,
+  components
 }

@@ -1,17 +1,16 @@
-import 'module-alias/register'
-import { IMiddleware, IHttpRequest, IHttpResponse } from '@/presentation/protocols'
-import { NextFunction, Request, Response } from 'express'
+import { Middleware } from '@/presentation/protocols'
 
-// Proxy Design Pattern
-export const adaptMiddleware = (controller: IMiddleware) => {
+import { Request, Response, NextFunction } from 'express'
+
+export const adaptMiddleware = (middleware: Middleware) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const httpRequest: IHttpRequest = {
-      headers: req.headers
+    const request = {
+      accessToken: req.headers?.['x-access-token'],
+      ...(req.headers || {})
     }
-
-    const httpResponse: IHttpResponse = await controller.handle(httpRequest)
+    const httpResponse = await middleware.handle(request)
     if (httpResponse.statusCode === 200) {
-      Object.assign(req, httpRequest.body)
+      Object.assign(req, httpResponse.body)
       next()
     } else {
       res.status(httpResponse.statusCode).json({

@@ -1,16 +1,15 @@
-import 'module-alias/register'
-import { IController, IHttpRequest, IHttpResponse } from '@/presentation/protocols'
+import { Controller } from '@/presentation/protocols'
+
 import { Request, Response } from 'express'
 
-export const adaptRoute = (controller: IController) => {
+export const adaptRoute = (controller: Controller) => {
   return async (req: Request, res: Response) => {
-    const httpRequest: IHttpRequest = {
-      body: req.body,
-      params: req.params,
+    const request = {
+      ...(req.body || {}),
+      ...(req.params || {}),
       accountId: req.accountId
     }
-
-    const httpResponse: IHttpResponse = await controller.handle(httpRequest)
+    const httpResponse = await controller.handle(request)
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       res.status(httpResponse.statusCode).json(httpResponse.body)
     } else {
