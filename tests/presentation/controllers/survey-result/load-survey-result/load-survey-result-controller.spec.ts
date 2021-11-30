@@ -8,6 +8,7 @@ import { InvalidParamError } from '@/presentation/errors'
 import { forbiden, serverError, ok } from '@/presentation/middlewares/authentication-middleware-protocols'
 import { mockLoadSurveyResult } from '@/tests/presentation/mocks/mock-survey-result'
 import { ILoadSurveyResult } from '@/domain/usecases/load-survey-result'
+import { mockSurveyResultModel } from '@/tests/domain/mocks'
 const makeFakeRequest = (): IHttpRequest => ({
   params: {
     surveyId: 'any_survey_id'
@@ -78,6 +79,6 @@ describe('SaveSurveyResultController', () => {
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(ok(mockLoadSurveyResult()))
+    expect(httpResponse).toEqual(ok(mockSurveyResultModel()))
   })
 })
