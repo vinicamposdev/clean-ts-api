@@ -16,7 +16,8 @@
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "jest --passWithNoTests --runInBand --no-cache --detectOpenHandles --forceExit",
     "test:ci": "npm test -- --coverage --forceExit",
-    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
+    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -51,7 +52,7 @@
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-standard": "^4.1.0",
     "git-commit-msg-linter": "^3.2.6",
-    "husky": "^4.3.8",
+    "husky": "^7.0.0",
     "jest": "^26.6.3",
     "mockdate": "^3.0.5",
     "supertest": "^6.1.3",
