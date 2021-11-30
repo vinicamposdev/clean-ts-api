@@ -75,4 +75,15 @@ describe('Survey Routes', () => {
         .expect(403)
     })
   })
+
+  describe('GET /surveys/:surveyId/results', () => {
+    test('Should return 403 on save survey result without access token', async () => {
+      await request(app)
+        .get('/api/surveys/any_id/results')
+        .send({
+          answer: 'any_answer'
+        })
+        .expect(403)
+    })
+  })
 })
