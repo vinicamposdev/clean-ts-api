@@ -1,5 +1,5 @@
-import { SaveSurveyResult } from '@/domain/usecases/save-survey-result'
+import { SurveyResultModel } from '@/domain/models/survey-result'
 
 export interface ILoadSurveyResultRepository {
-  loadBySurveyId: (surveyId: string) => Promise<SaveSurveyResult.Result>
+  loadBySurveyId: (surveyId: string) => Promise<SurveyResultModel>
 }

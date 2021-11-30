@@ -71,7 +71,10 @@ describe('save() SaveSurveyResultMongoRepository', () => {
         answer: survey.answers[0].answer,
         date: new Date()
       })
-      const surveyResult = await surveyResultCollection.find().toArray()
+      const surveyResult = await surveyResultCollection.findOne({
+        surveyId: survey.id,
+        accountId: account.id
+      })
       expect(surveyResult).toBeTruthy()
     })
 
