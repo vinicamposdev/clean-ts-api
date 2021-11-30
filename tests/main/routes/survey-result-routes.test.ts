@@ -12,7 +12,8 @@ describe('Survey Routes', () => {
     const res = await accountCollection.insertOne({
       name: 'valid_name',
       email: 'valid_mail',
-      password: 'valid_password'
+      password: 'valid_password',
+      role: 'admin'
     })
     const id = res.ops[0]._id
     const accessToken = sign({ id }, env.jwtSecret)
@@ -83,6 +84,28 @@ describe('Survey Routes', () => {
         .send({
           answer: 'any_answer'
         })
+        .expect(403)
+    })
+
+    test('Should return 200 on load survey result WITH access token', async () => {
+      const accessToken = await mockAccessToken()
+      const res = await surveyCollection.insertOne({
+        question: 'any_question',
+        answers: [{
+          image: 'any_image',
+          answer: 'any_answer_1'
+        }, {
+          answer: 'any_answer_2'
+        }, {
+          answer: 'any_answer_3'
+        }],
+        date: new Date()
+      })
+      const surveyId: string = res.ops[0]._id
+      await request(app)
+        .get(`/api/surveys/${surveyId}/results`)
+        .set('x-access-token', accessToken)
+        // .expect(200)
         .expect(403)
     })
   })
