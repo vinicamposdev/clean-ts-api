@@ -2,13 +2,29 @@ import MockDate from 'mockdate'
 
 import { IHttpRequest } from '@/presentation/protocols'
 import { LoadSurveyResultController } from './load-survey-result-controller'
-import { makeDbLoadSurveyById } from '@/main/factories/usecases/survey/load-survey-by-id/db-load-survey-by-id'
+import { ILoadSurveyById } from '@/domain/usecases/load-survey-by-id'
+import { mockLoadSurveyByIdRepository } from '@/tests/data/mocks'
 
 const makeFakeRequest = (): IHttpRequest => ({
   params: {
     surveyId: 'any_survey_id'
   }
 })
+
+type SutTypes = {
+  sut: LoadSurveyResultController
+  loadSurveyByIdStub: ILoadSurveyById
+}
+
+const makeSut = (): SutTypes => {
+  const loadSurveyByIdStub = mockLoadSurveyByIdRepository()
+  const sut = new LoadSurveyResultController(loadSurveyByIdStub)
+  return {
+    sut,
+    loadSurveyByIdStub
+  }
+}
+
 describe('SaveSurveyResultController', () => {
   beforeAll(() => {
     MockDate.set(new Date())
@@ -19,9 +35,8 @@ describe('SaveSurveyResultController', () => {
   })
 
   test('Should call LoadSurveyById with correct values', async () => {
-    const loadSurveyByIdStub = makeDbLoadSurveyById()
+    const { loadSurveyByIdStub, sut } = makeSut()
     const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById')
-    const sut = new LoadSurveyResultController(loadSurveyByIdStub)
     await sut.handle(makeFakeRequest())
     expect(loadByIdSpy).toHaveBeenCalledWith('any_survey_id')
   })
