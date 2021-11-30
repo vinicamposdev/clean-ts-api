@@ -1,9 +1,10 @@
 import { IController } from '@/presentation/protocols'
 import { makeLogControllerDecorator } from '@/main/factories/decorators/log-controller-decorator'
-import { LoadSurveysController } from '@/presentation/controllers/survey/load-surveys/load-surveys-controller'
-import { makeDbLoadSurvey } from '@/main/factories/usecases/survey/load-surveys/db-load-surveys'
+import { LoadSurveyResultController } from '@/presentation/controllers/survey-result/load-survey-result/load-survey-result-controller'
+import { makeDbLoadSurveyById } from '@/main/factories/usecases/survey/load-survey-by-id/db-load-survey-by-id'
+import { makeDbLoadSurveyResult } from '@/main/factories/usecases/survey-result/load-survey-result/db-load-survey-result-factory'
 
 export const makeLoadSurveyController = (): IController => {
-  const surveyController = new LoadSurveysController(makeDbLoadSurvey())
+  const surveyController = new LoadSurveyResultController(makeDbLoadSurveyById(), makeDbLoadSurveyResult())
   return makeLogControllerDecorator(surveyController)
 }
