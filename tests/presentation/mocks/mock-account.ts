@@ -1,7 +1,4 @@
 import { AddAccount, Authentication, LoadAccountByToken } from '@/domain/usecases'
-import { AccountModel } from '@/domain/models'
-import { mockAccountModel } from '@/../tests/domain/mocks'
-
 import faker from 'faker'
 
 export class AddAccountSpy implements AddAccount {
@@ -28,13 +25,13 @@ export class AuthenticationSpy implements Authentication {
 }
 
 export class LoadAccountByTokenSpy implements LoadAccountByToken {
-  accountModel = mockAccountModel()
+  result = { id: faker.datatype.uuid() }
   accessToken: string
   role: string
 
-  async load (accessToken: string, role?: string): Promise<AccountModel> {
+  async load ({ accessToken, role }: LoadAccountByToken.Params): Promise<LoadAccountByToken.Result> {
     this.accessToken = accessToken
     this.role = role
-    return this.accountModel
+    return this.result
   }
 }
