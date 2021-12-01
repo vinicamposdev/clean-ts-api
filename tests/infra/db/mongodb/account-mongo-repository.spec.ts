@@ -42,7 +42,6 @@ describe('AccountMongoRepository', () => {
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
       expect(account.name).toBe(addAccountParams.name)
-      expect(account.email).toBe(addAccountParams.email)
       expect(account.password).toBe(addAccountParams.password)
     })
 
