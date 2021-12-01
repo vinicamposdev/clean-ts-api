@@ -28,12 +28,8 @@ describe('AccountMongoRepository', () => {
     test('Should return an account on success', async () => {
       const sut = makeSut()
       const addAccountParams = mockAddAccountParams()
-      const account = await sut.add(addAccountParams)
-      expect(account).toBeTruthy()
-      expect(account.id).toBeTruthy()
-      expect(account.name).toBe(addAccountParams.name)
-      expect(account.email).toBe(addAccountParams.email)
-      expect(account.password).toBe(addAccountParams.password)
+      const accountExist = await sut.add(addAccountParams)
+      expect(accountExist).toBeTruthy()
     })
   })
 
@@ -63,7 +59,7 @@ describe('AccountMongoRepository', () => {
       const res = await accountCollection.insertOne(mockAddAccountParams())
       const fakeAccount = res.ops[0]
       expect(fakeAccount.accessToken).toBeFalsy()
-      const accessToken =  faker.datatype.uuid()
+      const accessToken = faker.datatype.uuid()
       await sut.updateAccessToken(fakeAccount._id, accessToken)
       const account = await accountCollection.findOne({ _id: fakeAccount._id })
       expect(account).toBeTruthy()
@@ -75,13 +71,13 @@ describe('AccountMongoRepository', () => {
     let name = faker.name.findName()
     let email = faker.internet.email()
     let password = faker.internet.password()
-    let accessToken =  faker.datatype.uuid()
+    let accessToken = faker.datatype.uuid()
 
     beforeEach(() => {
       name = faker.name.findName()
       email = faker.internet.email()
       password = faker.internet.password()
-      accessToken =  faker.datatype.uuid()
+      accessToken = faker.datatype.uuid()
     })
 
     test('Should return an account on loadByToken without role', async () => {

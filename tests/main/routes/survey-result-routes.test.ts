@@ -65,8 +65,9 @@ describe('Survey Routes', () => {
         }],
         date: new Date()
       })
+      const surveyId: string = res.ops[0]._id
       await request(app)
-        .put(`/api/surveys/${res.ops[0]._id}/results`)
+        .put(`/api/surveys/${surveyId}/results`)
         .set('x-access-token', accessToken)
         .send({
           answer: 'Answer 1'
@@ -94,8 +95,9 @@ describe('Survey Routes', () => {
         }],
         date: new Date()
       })
+      const surveyId: string = res.ops[0]._id
       await request(app)
-        .get(`/api/surveys/${res.ops[0]._id}/results`)
+        .get(`/api/surveys/${surveyId}/results`)
         .set('x-access-token', accessToken)
         .expect(200)
     })
