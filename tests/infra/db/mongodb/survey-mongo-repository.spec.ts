@@ -17,6 +17,8 @@ const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository()
 }
 
+const fakeMongoDbId = new FakeObjectId().str
+
 describe('SurveyMongoRepository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -82,6 +84,28 @@ describe('SurveyMongoRepository', () => {
       expect(survey).toBeTruthy()
       expect(survey.id).toBeTruthy()
     })
+
+    test('Should return null if survey does not exists', async () => {
+      const sut = makeSut()
+      const survey = await sut.loadById(fakeMongoDbId)
+      expect(survey).toBeFalsy()
+    })
+  })
+
+  describe('loadAnswers()', () => {
+    test('Should load answers on success', async () => {
+      const res = await surveyCollection.insertOne(mockAddSurveyParams())
+      const survey = res.ops[0]
+      const sut = makeSut()
+      const answers = await sut.loadAnswers(survey._id)
+      expect(answers).toEqual([survey.answers[0].answer, survey.answers[1].answer])
+    })
+
+    test('Should return empty array if survey does not exists', async () => {
+      const sut = makeSut()
+      const answers = await sut.loadAnswers(fakeMongoDbId)
+      expect(answers.length).toBe(0)
+    })
   })
 
   describe('checkById()', () => {
@@ -94,8 +118,7 @@ describe('SurveyMongoRepository', () => {
 
     test('Should return false if survey exists', async () => {
       const sut = makeSut()
-      const id = new FakeObjectId().str
-      const exists = await sut.checkById(id)
+      const exists = await sut.checkById(fakeMongoDbId)
       expect(exists).toBeFalsy()
     })
   })
