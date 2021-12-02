@@ -1,5 +1,13 @@
 import { SurveyResultModel } from '@/domain/models'
 
 export interface LoadSurveyResultRepository {
-  loadBySurveyId: (surveyId: string, accountId: string) => Promise<SurveyResultModel>
+  loadBySurveyId: (data: LoadSurveyResultRepository.Params) => Promise<LoadSurveyResultRepository.Result>
+}
+
+export namespace LoadSurveyResultRepository {
+  export type Params = {
+    surveyId: string
+    accountId: string
+  }
+  export type Result = SurveyResultModel
 }

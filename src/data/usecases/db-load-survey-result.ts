@@ -1,5 +1,4 @@
 import { LoadSurveyResult } from '@/domain/usecases'
-import { SurveyResultModel } from '@/domain/models'
 import { LoadSurveyResultRepository, LoadSurveyByIdRepository } from '@/data/protocols'
 
 export class DbLoadSurveyResult implements LoadSurveyResult {
@@ -8,8 +7,8 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
     private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository
   ) {}
 
-  async load (surveyId: string, accountId: string): Promise<SurveyResultModel> {
-    let surveyResult = await this.loadSurveyResultRepository.loadBySurveyId(surveyId, accountId)
+  async load ({ surveyId, accountId }: LoadSurveyResult.Params): Promise<LoadSurveyResult.Result> {
+    let surveyResult = await this.loadSurveyResultRepository.loadBySurveyId({ surveyId, accountId })
     if (!surveyResult) {
       const survey = await this.loadSurveyByIdRepository.loadById(surveyId)
       surveyResult = {
