@@ -1,12 +1,13 @@
 import setupMiddlewares from './middlewares'
 import setupRoutes from './routes'
 import setupStaticFiles from './static-files'
-import setupSwagger from './config-swagger'
-import staticFiles from './static-files'
+import setupSwagger from './swagger'
+import setupApolloServer from './apollo-server'
 
 import express from 'express'
 
 const app = express()
+setupApolloServer(app)
 setupStaticFiles(app)
 setupSwagger(app)
 setupMiddlewares(app)
