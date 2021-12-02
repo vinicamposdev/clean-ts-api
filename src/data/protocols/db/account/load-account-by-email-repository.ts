@@ -1,5 +1,12 @@
-import { IAccountModel } from '@/domain/models/account'
+export interface LoadAccountByEmailRepository {
+  loadByEmail: (email: LoadAccountByEmailRepository.Params) => Promise<LoadAccountByEmailRepository.Result>
+}
 
-export interface ILoadAccountByEmailRepository {
-  loadByEmail: (email: string) => Promise<IAccountModel>
+export namespace LoadAccountByEmailRepository {
+  export type Params = string
+  export type Result = {
+    id: string
+    name: string
+    password: string
+  }
 }

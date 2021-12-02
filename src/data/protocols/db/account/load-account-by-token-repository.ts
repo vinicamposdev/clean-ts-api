@@ -1,5 +1,13 @@
-import { IAccountModel } from '@/domain/models/account'
+export interface LoadAccountByTokenRepository {
+  loadByToken: (data: LoadAccountByTokenRepository.Params) => Promise<LoadAccountByTokenRepository.Result>
+}
 
-export interface ILoadAccountByTokenRepository {
-  loadByToken: (token: string, role?: string) => Promise<IAccountModel>
+export namespace LoadAccountByTokenRepository {
+  export type Params = {
+    accessToken: string
+    role?: string
+  }
+  export type Result = {
+    id: string
+  }
 }

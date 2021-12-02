@@ -1,11 +1,13 @@
-import { SurveyResultModel } from '../models/survey-result'
+import { SurveyResultModel } from '@/domain/models'
 
-export namespace LoadSurveyResult {
-  export type Params = string
-
-  export type Result = SurveyResultModel
+export interface LoadSurveyResult {
+  load: (data: LoadSurveyResult.Params) => Promise<LoadSurveyResult.Result>
 }
 
-export interface ILoadSurveyResult {
-  load: (surveyId: LoadSurveyResult.Params) => Promise<LoadSurveyResult.Result>
+export namespace LoadSurveyResult {
+  export type Params = {
+    surveyId: string
+    accountId: string
+  }
+  export type Result = SurveyResultModel
 }

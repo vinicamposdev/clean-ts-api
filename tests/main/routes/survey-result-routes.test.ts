@@ -1,34 +1,39 @@
-import request from 'supertest'
 import app from '@/main/config/app'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { Collection } from 'mongodb'
-import { sign } from 'jsonwebtoken'
 import env from '@/main/config/env'
+import { MongoHelper } from '@/infra/db/mongodb/mongo-helper'
+import { sign } from 'jsonwebtoken'
+import { Collection } from 'mongodb'
+import request from 'supertest'
+import faker from 'faker'
+
+let surveyCollection: Collection
+let accountCollection: Collection
+
+const mockAccessToken = async (): Promise<string> => {
+  const res = await accountCollection.insertOne({
+    name: faker.name.firstName(),
+    email: faker.internet.email(),
+    password: faker.internet.password()
+  })
+  const id = res.ops[0]._id
+  const accessToken = sign({ id }, env.jwtSecret)
+  await accountCollection.updateOne({
+    _id: id
+  }, {
+    $set: {
+      accessToken
+    }
+  })
+  return accessToken
+}
 
 describe('Survey Routes', () => {
-  let accountCollection: Collection
-  let surveyCollection: Collection
-  const mockAccessToken = async (): Promise<string> => {
-    const res = await accountCollection.insertOne({
-      name: 'valid_name',
-      email: 'valid_mail',
-      password: 'valid_password',
-      role: 'admin'
-    })
-    const id = res.ops[0]._id
-    const accessToken = sign({ id }, env.jwtSecret)
-    await accountCollection.updateOne({
-      _id: id
-    }, {
-      $set: {
-        accessToken
-      }
-    })
-    return accessToken
-  }
-
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+  })
+
+  afterAll(async () => {
+    await MongoHelper.disconnect()
   })
 
   beforeEach(async () => {
@@ -38,11 +43,8 @@ describe('Survey Routes', () => {
     await accountCollection.deleteMany({})
   })
 
-  afterAll(async () => {
-    await MongoHelper.disconnect()
-  })
   describe('PUT /surveys/:surveyId/results', () => {
-    test('Should return 403 on save survey result without access token', async () => {
+    test('Should return 403 on save survey result without accessToken', async () => {
       await request(app)
         .put('/api/surveys/any_id/results')
         .send({
@@ -51,17 +53,15 @@ describe('Survey Routes', () => {
         .expect(403)
     })
 
-    test('Should return 200 on save survey result WITH access token', async () => {
+    test('Should return 200 on save survey result with accessToken', async () => {
       const accessToken = await mockAccessToken()
       const res = await surveyCollection.insertOne({
-        question: 'any_question',
+        question: 'Question',
         answers: [{
-          image: 'any_image',
-          answer: 'any_answer_1'
+          answer: 'Answer 1',
+          image: 'http://image-name.com'
         }, {
-          answer: 'any_answer_2'
-        }, {
-          answer: 'any_answer_3'
+          answer: 'Answer 2'
         }],
         date: new Date()
       })
@@ -70,34 +70,28 @@ describe('Survey Routes', () => {
         .put(`/api/surveys/${surveyId}/results`)
         .set('x-access-token', accessToken)
         .send({
-          answer: 'any_answer'
+          answer: 'Answer 1'
         })
-        // .expect(200)
-        .expect(403)
+        .expect(200)
     })
   })
 
   describe('GET /surveys/:surveyId/results', () => {
-    test('Should return 403 on save survey result without access token', async () => {
+    test('Should return 403 on load survey result without accessToken', async () => {
       await request(app)
         .get('/api/surveys/any_id/results')
-        .send({
-          answer: 'any_answer'
-        })
         .expect(403)
     })
 
-    test('Should return 200 on load survey result WITH access token', async () => {
+    test('Should return 200 on load survey result with accessToken', async () => {
       const accessToken = await mockAccessToken()
       const res = await surveyCollection.insertOne({
-        question: 'any_question',
+        question: 'Question',
         answers: [{
-          image: 'any_image',
-          answer: 'any_answer_1'
+          answer: 'Answer 1',
+          image: 'http://image-name.com'
         }, {
-          answer: 'any_answer_2'
-        }, {
-          answer: 'any_answer_3'
+          answer: 'Answer 2'
         }],
         date: new Date()
       })
@@ -105,8 +99,7 @@ describe('Survey Routes', () => {
       await request(app)
         .get(`/api/surveys/${surveyId}/results`)
         .set('x-access-token', accessToken)
-        // .expect(200)
-        .expect(403)
+        .expect(200)
     })
   })
 })

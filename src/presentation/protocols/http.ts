@@ -1,11 +1,4 @@
-export type IHttpResponse = {
+export type HttpResponse = {
   statusCode: number
   body: any
-}
-
-export type IHttpRequest = {
-  body?: any
-  headers?: any
-  params?: any
-  accountId?: string
 }

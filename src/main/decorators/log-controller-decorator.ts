@@ -1,19 +1,17 @@
-import { ILogErrorRepository } from '@/data/protocols/db/log-error-repository'
-import { IController, IHttpRequest, IHttpResponse } from '@/presentation/protocols'
+import { Controller, HttpResponse } from '@/presentation/protocols'
+import { LogErrorRepository } from '@/data/protocols/db'
 
-export class LogControllerDecorator implements IController {
+export class LogControllerDecorator implements Controller {
   constructor (
-    private readonly controller: IController,
-    private readonly logErrorRepository: ILogErrorRepository
+    private readonly controller: Controller,
+    private readonly logErrorRepository: LogErrorRepository
   ) {}
 
-  async handle (httpRequest: IHttpRequest): Promise<IHttpResponse> {
-    const httpResponse = await this.controller.handle(httpRequest)
-
+  async handle (request: any): Promise<HttpResponse> {
+    const httpResponse = await this.controller.handle(request)
     if (httpResponse.statusCode === 500) {
       await this.logErrorRepository.logError(httpResponse.body.stack)
     }
-
     return httpResponse
   }
 }

@@ -1,3 +1,3 @@
-export interface IValidation {
+export interface Validation {
   validate: (input: any) => Error
 }

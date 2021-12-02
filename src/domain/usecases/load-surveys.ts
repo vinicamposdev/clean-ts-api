@@ -1,5 +1,10 @@
-import { SurveyModel } from '@/domain/models/survey'
+import { SurveyModel } from '@/domain/models'
 
-export interface ILoadSurveys {
-  load: () => Promise<SurveyModel[]>
+export interface LoadSurveys {
+  load: (accountId: LoadSurveys.Params) => Promise<LoadSurveys.Result>
+}
+
+export namespace LoadSurveys {
+  export type Params = string
+  export type Result = SurveyModel[]
 }
