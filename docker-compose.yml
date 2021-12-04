@@ -17,7 +17,7 @@ services:
     environment:
       - MONGO_URL=mongodb://mongo:27017/clean-ts-api
     volumes:
-      - ./dist/:/usr/src/clean-ts-api/dist/
+      - ./dist/:/usr/src/clean-ts-api/dist
       - ./package.json:/usr/src/clean-ts-api/package.json
     ports:
       - "5050:5050"
