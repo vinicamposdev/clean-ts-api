@@ -18,7 +18,7 @@
     "test:staged": "jest --passWithNoTests --runInBand --no-cache --detectOpenHandles --forceExit",
     "test:ci": "npm test -- --coverage --forceExit",
     "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
-    "prepare": "husky install"
+    "githook": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -29,7 +29,8 @@
     "apollo-server-express": "^2.25.3",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
-    "graphql": "^15.7.2",
+    "graphql": "14.0.0",
+    "graphql-iso-date": "^3.6.1",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "mongodb": "^3.6.10",
@@ -43,6 +44,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/graphql": "^14.5.0",
+    "@types/graphql-iso-date": "^3.4.0",
     "@types/jest": "^26.0.24",
     "@types/mongodb": "^3.6.20",
     "@types/node": "^14.17.5",
