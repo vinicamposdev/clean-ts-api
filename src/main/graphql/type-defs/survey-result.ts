@@ -2,11 +2,11 @@ import { gql } from 'apollo-server-express'
 
 export default gql`
   extend type Query {
-    surveysResult: (surveyId: String!): SurveyResult! @auth
+    surveyResult (surveyId: String!): SurveyResult! @auth
   }
 
   extend type Mutation {
-    saveSurveysResult (surveyId: String!, answer: String!): Account!
+    saveSurveyResult (surveyId: String!, answer: String!): SurveyResult! @auth
   }
 
   type SurveyResult {

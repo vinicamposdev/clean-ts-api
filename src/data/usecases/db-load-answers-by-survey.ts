@@ -6,6 +6,6 @@ export class DbLoadAnswersBySurvey implements LoadAnswersBySurvey {
 
   async loadAnswers (id: LoadAnswersBySurvey.Params): Promise<LoadAnswersBySurvey.Result> {
     const answers = await this.loadAnswersBySurveyRepository.loadAnswers(id)
-    return answers || []
+    return answers
   }
 }

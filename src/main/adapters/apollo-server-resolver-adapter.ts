@@ -1,5 +1,5 @@
 import { Controller } from '@/presentation/protocols'
-import { ApolloError, AuthenticationError, ForbiddenError, UserInputError } from 'apollo-server-errors'
+import { ApolloError, AuthenticationError, ForbiddenError, UserInputError } from 'apollo-server-express'
 
 export const adaptResolver = async (controller: Controller, args?: any): Promise<any> => {
   const httpResponse = await controller.handle({ ...args })

@@ -1,13 +1,16 @@
-import app from '@/main/config/app'
+import { setupApp } from '@/main/config/app'
 import env from '@/main/config/env'
 import { MongoHelper } from '@/infra/db/mongodb/mongo-helper'
+
 import { sign } from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 import faker from 'faker'
+import { Express } from 'express'
 
 let surveyCollection: Collection
 let accountCollection: Collection
+let app: Express
 
 const mockAccessToken = async (): Promise<string> => {
   const res = await accountCollection.insertOne({
@@ -15,7 +18,7 @@ const mockAccessToken = async (): Promise<string> => {
     email: faker.internet.email(),
     password: faker.internet.password()
   })
-  const id = res.ops[0]._id
+  const id = res.insertedId
   const accessToken = sign({ id }, env.jwtSecret)
   await accountCollection.updateOne({
     _id: id
@@ -30,6 +33,7 @@ const mockAccessToken = async (): Promise<string> => {
 describe('Survey Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+    app = await setupApp()
   })
 
   afterAll(async () => {
@@ -37,9 +41,9 @@ describe('Survey Routes', () => {
   })
 
   beforeEach(async () => {
-    surveyCollection = await MongoHelper.getCollection('surveys')
+    surveyCollection = MongoHelper.getCollection('surveys')
     await surveyCollection.deleteMany({})
-    accountCollection = await MongoHelper.getCollection('accounts')
+    accountCollection = MongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
   })
 
@@ -65,7 +69,7 @@ describe('Survey Routes', () => {
         }],
         date: new Date()
       })
-      const surveyId: string = res.ops[0]._id
+      const surveyId: string = res.insertedId.toHexString()
       await request(app)
         .put(`/api/surveys/${surveyId}/results`)
         .set('x-access-token', accessToken)
@@ -95,7 +99,7 @@ describe('Survey Routes', () => {
         }],
         date: new Date()
       })
-      const surveyId: string = res.ops[0]._id
+      const surveyId: string = res.insertedId.toHexString()
       await request(app)
         .get(`/api/surveys/${surveyId}/results`)
         .set('x-access-token', accessToken)
