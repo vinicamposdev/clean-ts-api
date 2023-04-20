@@ -6,6 +6,7 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
+  coverageReporters: ['text', 'cobertura', 'lcov', 'html'],
   testEnvironment: 'node',
   preset: '@shelf/jest-mongodb',
   transform: {
